@@ -1,0 +1,185 @@
+Coverage Report by instance with details
+
+=================================================================================
+=== Instance: /\tb_top#DUT 
+=== Design Unit: work.ALU
+=================================================================================
+
+Assertion Coverage:
+    Assertions                       1         1         0   100.00%
+--------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass 
+                                                  Count        Count
+--------------------------------------------------------------------
+/\tb_top#DUT /reset_assert
+                     design/ALU.sv(46)                  0          1
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                         6         6         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /\tb_top#DUT 
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File design/ALU.sv
+------------------------------------CASE Branch------------------------------------
+    27                                      9998     Count coming in to CASE
+    28              1                       2493                 ADD: alu_out = A + B;                      // Perform addition
+    29              1                       2480                 SUB: alu_out = A - B;                      // Perform subtraction
+    30              1                       2558                 NOT_A: alu_out = ~A;                       // Perform logical NOT on A
+    31              1                       2467                 REDUCTIONOR_B: alu_out = |B;               // Perform bitwise reduction OR on B
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    38                                     10095     Count coming in to IF
+    38              1                        623             if (rst) 
+    40              1                       9472             else
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+
+Directive Coverage:
+    Directives                       9         9         0   100.00%
+
+DIRECTIVE COVERAGE:
+--------------------------------------------------------------------------------------------
+Name                                     Design Design   Lang File(Line)      Hits Status    
+                                         Unit   UnitType                                     
+--------------------------------------------------------------------------------------------
+/\tb_top#DUT /cover_add                  ALU    Verilog  SVA  design/ALU.sv(49)
+                                                                              2493 Covered   
+/\tb_top#DUT /cover_sub                  ALU    Verilog  SVA  design/ALU.sv(50)
+                                                                              2481 Covered   
+/\tb_top#DUT /cover_notA                 ALU    Verilog  SVA  design/ALU.sv(51)
+                                                                              2558 Covered   
+/\tb_top#DUT /cover_redorB               ALU    Verilog  SVA  design/ALU.sv(52)
+                                                                              2469 Covered   
+/\tb_top#DUT /cover_nonzero_A            ALU    Verilog  SVA  design/ALU.sv(55)
+                                                                              9392 Covered   
+/\tb_top#DUT /cover_nonzero_B            ALU    Verilog  SVA  design/ALU.sv(56)
+                                                                              9401 Covered   
+/\tb_top#DUT /cover_reset                ALU    Verilog  SVA  design/ALU.sv(59)
+                                                                               314 Covered   
+/\tb_top#DUT /cover_all_A_values         ALU    Verilog  SVA  design/ALU.sv(62)
+                                                                              2562 Covered   
+/\tb_top#DUT /cover_all_B_values         ALU    Verilog  SVA  design/ALU.sv(63)
+                                                                              2488 Covered   
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      13        13         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /\tb_top#DUT  --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File design/ALU.sv
+    1                                                module ALU(ALU_if.DUT alu_if );
+    2                                                 
+    3                                                    logic rst;                        // Asynchronous Reset signal
+    4                                                    logic clk;                        // Clock signal
+    5                                                    logic [1:0] opcode;               // 2-bit operation code to select ALU operation
+    6                                                    logic signed [3:0] A, B;          // 4-bit signed inputs A and B for ALU operations
+    7                                                    logic signed [4:0] C;             // 5-bit signed output C from ALU operations
+    8                                                
+    9                                                    // Define operation codes using local parameters
+    10                                                   localparam ADD = 2'b00;           // Code for addition operation
+    11                                                   localparam SUB = 2'b01;           // Code for subtraction operation
+    12                                                   localparam NOT_A = 2'b10;         // Code for logical NOT operation on A
+    13                                                   localparam REDUCTIONOR_B = 2'b11; // Code for bitwise reduction OR on B
+    14                                               
+    15              1                      20003         assign clk = alu_if.clk;
+    16              1                        620         assign rst = alu_if.rst;
+    17              1                       7495         assign opcode = alu_if.opcode;
+    18              1                       9359         assign A = alu_if.A;
+    19              1                       9373         assign B = alu_if.B;
+    20                                               
+    21                                                   assign alu_if.C = C;
+    22                                               
+    23                                                   reg signed [4:0] alu_out;       
+    24                                               
+    25                                                   // Combinational logic block to perform ALU operations based on opcode
+    26              1                       9998         always @(*) begin
+    27                                                       case(opcode) 
+    28              1                       2493                 ADD: alu_out = A + B;                      // Perform addition
+    29              1                       2480                 SUB: alu_out = A - B;                      // Perform subtraction
+    30              1                       2558                 NOT_A: alu_out = ~A;                       // Perform logical NOT on A
+    31              1                       2467                 REDUCTIONOR_B: alu_out = |B;               // Perform bitwise reduction OR on B
+    32                                                           default: alu_out = 5'bx;                   // Default case to avoid latch inference
+    33                                                       endcase
+    34                                                   end
+    35                                               
+    36                                                   // Sequential logic block to update output C on clock edge or reset
+    37              1                      10095         always @(posedge clk or posedge rst) begin     
+    38                                                       if (rst) 
+    39              1                        623                 C <= 5'b0;                                // Reset output C to zero on reset signal
+    40                                                       else
+    41              1                       9472                 C <= alu_out;                             // Update output C with ALU result
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                         44        44         0   100.00%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /\tb_top#DUT  --
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                            A[3-0]           1           1                              100.00 
+                                            B[3-0]           1           1                              100.00 
+                                            C[4-0]           1           1                              100.00 
+                                      alu_out[4-0]           1           1                              100.00 
+                                               clk           1           1                              100.00 
+                                       opcode[1-0]           1           1                              100.00 
+                                               rst           1           1                              100.00 
+
+Total Node Count     =         22 
+Toggled Node Count   =         22 
+Untoggled Node Count =          0 
+
+Toggle Coverage      =     100.00% (44 of 44 bins)
+
+
+DIRECTIVE COVERAGE:
+--------------------------------------------------------------------------------------------
+Name                                     Design Design   Lang File(Line)      Hits Status    
+                                         Unit   UnitType                                     
+--------------------------------------------------------------------------------------------
+/\tb_top#DUT /cover_add                  ALU    Verilog  SVA  design/ALU.sv(49)
+                                                                              2493 Covered   
+/\tb_top#DUT /cover_sub                  ALU    Verilog  SVA  design/ALU.sv(50)
+                                                                              2481 Covered   
+/\tb_top#DUT /cover_notA                 ALU    Verilog  SVA  design/ALU.sv(51)
+                                                                              2558 Covered   
+/\tb_top#DUT /cover_redorB               ALU    Verilog  SVA  design/ALU.sv(52)
+                                                                              2469 Covered   
+/\tb_top#DUT /cover_nonzero_A            ALU    Verilog  SVA  design/ALU.sv(55)
+                                                                              9392 Covered   
+/\tb_top#DUT /cover_nonzero_B            ALU    Verilog  SVA  design/ALU.sv(56)
+                                                                              9401 Covered   
+/\tb_top#DUT /cover_reset                ALU    Verilog  SVA  design/ALU.sv(59)
+                                                                               314 Covered   
+/\tb_top#DUT /cover_all_A_values         ALU    Verilog  SVA  design/ALU.sv(62)
+                                                                              2562 Covered   
+/\tb_top#DUT /cover_all_B_values         ALU    Verilog  SVA  design/ALU.sv(63)
+                                                                              2488 Covered   
+
+TOTAL DIRECTIVE COVERAGE: 100.00%  COVERS: 9
+
+ASSERTION RESULTS:
+--------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass 
+                                                  Count        Count
+--------------------------------------------------------------------
+/\tb_top#DUT /reset_assert
+                     design/ALU.sv(46)                  0          1
+
+Total Coverage By Instance (filtered view): 100.00%
+
