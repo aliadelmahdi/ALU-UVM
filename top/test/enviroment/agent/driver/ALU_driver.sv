@@ -28,8 +28,6 @@ package ALU_driver_pkg;
                 alu_if.opcode =opcode_e'(stimulus_seq_item.opcode);
                 alu_if.A = stimulus_seq_item.A;
                 alu_if.B = stimulus_seq_item.B;
-                alu_if.C = stimulus_seq_item.C;
-
                 @(negedge alu_if.clk)
                 seq_item_port.item_done();
                 `uvm_info("run_phase",stimulus_seq_item.sprint(),UVM_HIGH)
